@@ -474,7 +474,8 @@ class DuplicateFinderGUI:
         self.sel_btn.pack(side=tk.LEFT, padx=(0,4))
         self.clr_btn = self._mkbtn(left, '☐ Deselect', 'white', self.C['text'], 1, self._deselect_all, px=10, py=4)
         self.clr_btn.pack(side=tk.LEFT, padx=(0,4))
-        
+        self.empty_btn = self._mkbtn(left, '📁 Delete Empty Folders', self.C['orange'], 'white', 0, self._delete_empty_folders, px=10, py=4)
+        self.empty_btn.pack(side=tk.LEFT, padx=(4,0))
         right = tk.Frame(card, bg=self.C['card']); right.pack(side=tk.RIGHT)
         self.del_btn = self._mkbtn(right, '🗑 Delete Selected', self.C['red'], 'white', 0, self._delete_selected, bold=True, px=16, py=5)
         self.del_btn.pack(side=tk.RIGHT)
@@ -637,7 +638,7 @@ class DuplicateFinderGUI:
         self.foot_l.config(text=f'● {len(groups)} groups, {dup_cnt} dupes, {format_size(total_wasted)} wasted')
 
     def _set_actions_state(self, state):
-        for b in (self.sel_btn, self.clr_btn): b.config(state=state)
+        for b in (self.sel_btn, self.clr_btn, self.empty_btn): b.config(state=state)
         self.del_btn.config(state=state)
 
     def _on_click(self, event):
@@ -654,14 +655,44 @@ class DuplicateFinderGUI:
 
     def _select_dupes(self):
         for v in self.check_vars.values(): v.set(False)
+        # Count files per parent folder from scanned_files
+        folder_counts = {}
+        for f in self.scanned_files:
+            d = os.path.dirname(f['path'])
+            folder_counts[d] = folder_counts.get(d, 0) + 1
         for g in self.duplicate_groups:
-            for f in g['files'][1:]:
-                if f['path'] in self.check_vars and f['path'] not in self.deleted_paths: self.check_vars[f['path']].set(True)
+            # Check parent folder file count of first file in group
+            first_dir = os.path.dirname(g['files'][0]['path'])
+            cnt = folder_counts.get(first_dir, 0)
+            if cnt > 10:
+                continue
+            elif cnt <= 5:
+                for f in g['files']:
+                    if f['path'] in self.check_vars and f['path'] not in self.deleted_paths: self.check_vars[f['path']].set(True)
+            else:
+                for f in g['files'][1:]:
+                    if f['path'] in self.check_vars and f['path'] not in self.deleted_paths: self.check_vars[f['path']].set(True)
         self._sync_cb()
 
     def _deselect_all(self):
         for v in self.check_vars.values(): v.set(False)
         self._sync_cb()
+
+    def _delete_empty_folders(self):
+        folder = self.folder_path.get()
+        if not folder: return
+        empty = []
+        for root, dirs, files in os.walk(folder):
+            if not dirs and not files:
+                empty.append(root)
+        if not empty: messagebox.showinfo('Empty Folders', 'No empty folders found.'); return
+        if not messagebox.askyesno('Confirm', f'Delete {len(empty)} empty folder(s)?\n\n' + '\n'.join(empty[:20]) + ('...' if len(empty)>20 else ''), icon='warning'): return
+        deleted = 0
+        for d in empty:
+            try: os.rmdir(d); deleted += 1
+            except: pass
+        messagebox.showinfo('Done', f'{deleted} empty folder(s) deleted.')
+        self.foot_l.config(text=f'● {deleted} empty folders deleted')
 
     def _sync_cb(self):
         for p in self.tree.get_children():
