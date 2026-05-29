@@ -1,0 +1,45 @@
+<!-- Step-by-step guide cards showing browse → scan → delete workflow -->
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="150" viewBox="0 0 560 150">
+  <style>
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-10px)} 60%{transform:translateY(-5px)} }
+    @keyframes glowCard { 0%,100%{filter:drop-shadow(0 0 5px rgba(233,69,96,0.3))} 50%{filter:drop-shadow(0 0 18px rgba(233,69,96,0.7))} }
+    @keyframes glowCard2 { 0%,100%{filter:drop-shadow(0 0 5px rgba(52,152,219,0.3))} 50%{filter:drop-shadow(0 0 18px rgba(52,152,219,0.7))} }
+    @keyframes glowCard3 { 0%,100%{filter:drop-shadow(0 0 5px rgba(39,174,96,0.3))} 50%{filter:drop-shadow(0 0 18px rgba(39,174,96,0.7))} }
+    @keyframes borderColor { 0%,100%{stroke:#e94560} 33%{stroke:#f39c12} 66%{stroke:#3498db} }
+    @keyframes borderColor2 { 0%,100%{stroke:#3498db} 33%{stroke:#27ae60} 66%{stroke:#e94560} }
+    @keyframes borderColor3 { 0%,100%{stroke:#27ae60} 33%{stroke:#3498db} 66%{stroke:#f39c12} }
+    .b1 { animation:bounce 2s ease-in-out infinite; transform-origin:center }
+    .b2 { animation:bounce 2.3s ease-in-out infinite; animation-delay:0.3s; transform-origin:center }
+    .b3 { animation:bounce 2.6s ease-in-out infinite; animation-delay:0.6s; transform-origin:center }
+    .g1 { animation:glowCard 2s ease-in-out infinite }
+    .g2 { animation:glowCard2 2.3s ease-in-out infinite; animation-delay:0.3s }
+    .g3 { animation:glowCard3 2.6s ease-in-out infinite; animation-delay:0.6s }
+    .bc1 { animation:borderColor 4s ease-in-out infinite }
+    .bc2 { animation:borderColor2 4s ease-in-out infinite }
+    .bc3 { animation:borderColor3 4s ease-in-out infinite }
+    @keyframes fadeIn { 0%{opacity:0;transform:scale(0.8)} 100%{opacity:1;transform:scale(1)} }
+    .fi1 { animation:fadeIn 0.8s ease-out both }
+    .fi2 { animation:fadeIn 1s ease-out both }
+    .fi3 { animation:fadeIn 1.2s ease-out both }
+  </style>
+  <rect x="0" y="0" width="560" height="150" rx="16" fill="#1a1a2e"/>
+  <!-- Card 1 -->
+  <rect x="15" y="12" width="165" height="125" rx="14" fill="#16213e" stroke-width="2.5" class="bc1 g1 fi1"/>
+  <text x="97" y="62" text-anchor="middle" font-size="38" class="b1">📂</text>
+  <text x="97" y="95" text-anchor="middle" font-size="13" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">STEP 1</text>
+  <text x="97" y="115" text-anchor="middle" font-size="11" font-family="Segoe UI, Arial, sans-serif" fill="#bdc3c7">Browse &amp; Select</text>
+  <text x="97" y="130" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Pick any folder</text>
+  <!-- Card 2 -->
+  <rect x="197" y="12" width="165" height="125" rx="14" fill="#16213e" stroke-width="2.5" class="bc2 g2 fi2"/>
+  <text x="280" y="62" text-anchor="middle" font-size="38" class="b2">🔍</text>
+  <text x="280" y="95" text-anchor="middle" font-size="13" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">STEP 2</text>
+  <text x="280" y="115" text-anchor="middle" font-size="11" font-family="Segoe UI, Arial, sans-serif" fill="#bdc3c7">Scan for Dupes</text>
+  <text x="280" y="130" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Auto-detects all</text>
+  <!-- Card 3 -->
+  <rect x="380" y="12" width="165" height="125" rx="14" fill="#16213e" stroke-width="2.5" class="bc3 g3 fi3"/>
+  <text x="462" y="62" text-anchor="middle" font-size="38" class="b3">✅</text>
+  <text x="462" y="95" text-anchor="middle" font-size="13" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">STEP 3</text>
+  <text x="462" y="115" text-anchor="middle" font-size="11" font-family="Segoe UI, Arial, sans-serif" fill="#bdc3c7">Select &amp; Delete</text>
+  <text x="462" y="130" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Safe or Permanent</text>
+</svg>
+ 

@@ -1,0 +1,68 @@
+<!-- Pipeline flow diagram showing scan → hash → detect → delete process -->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="290" viewBox="0 0 900 290">
+  <defs>
+    <linearGradient id="fBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16213e"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes fp { 0%,100%{opacity:0.2;transform:translateX(0)} 50%{opacity:0.9;transform:translateX(6px)} }
+    @keyframes fpDown { 0%,100%{opacity:0.2;transform:translateY(0)} 50%{opacity:0.9;transform:translateY(6px)} }
+    @keyframes boxGlow { 0%,100%{filter:drop-shadow(0 0 4px rgba(15,52,96,0.5))} 50%{filter:drop-shadow(0 0 16px rgba(15,52,96,0.9))} }
+    @keyframes colorPulse { 0%,100%{fill:#27ae60} 50%{fill:#1e8449} }
+    @keyframes titleBox { 0%,100%{filter:drop-shadow(0 0 3px #e94560)} 50%{filter:drop-shadow(0 0 12px #e94560)} }
+    @keyframes boxHover { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+    @keyframes fadeIn { 0%{opacity:0;transform:translateY(10px)} 100%{opacity:1;transform:translateY(0)} }
+    .p1 { animation:fp 2s ease-in-out infinite }
+    .p2 { animation:fp 2.5s ease-in-out infinite; animation-delay:0.3s }
+    .p3 { animation:fp 3s ease-in-out infinite; animation-delay:0.6s }
+    .p4 { animation:fpDown 2.8s ease-in-out infinite }
+    .p5 { animation:fpDown 3.2s ease-in-out infinite; animation-delay:0.5s }
+    .bg { animation:boxGlow 2.5s ease-in-out infinite }
+    .cp { animation:colorPulse 3s ease-in-out infinite }
+    .tb { animation:titleBox 2s ease-in-out infinite }
+    .bh { animation:boxHover 3.5s ease-in-out infinite }
+    .fi { animation:fadeIn 1s ease-out both }
+    .fi2 { animation:fadeIn 1.2s ease-out both }
+    .fi3 { animation:fadeIn 1.4s ease-out both }
+    .fi4 { animation:fadeIn 1.6s ease-out both }
+  </style>
+  <rect x="0" y="0" width="900" height="290" rx="16" fill="url(#fBg)"/>
+  <!-- Row 1 -->
+  <rect x="50" y="25" width="160" height="50" rx="10" fill="#0f3460" class="bg fi"/>
+  <text x="130" y="55" text-anchor="middle" font-size="14" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">📂 Folder Selected</text>
+  <text x="220" y="55" text-anchor="middle" font-size="22" fill="#e94560" class="p1" font-weight="bold">→</text>
+  <rect x="240" y="25" width="170" height="50" rx="10" fill="#1a1a2e" stroke="#3498db" stroke-width="1.5" class="bh fi2"/>
+  <text x="325" y="45" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#3498db">🔍 Recursive Scan</text>
+  <text x="325" y="62" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Walks all subfolders</text>
+  <text x="420" y="55" text-anchor="middle" font-size="22" fill="#e94560" class="p2" font-weight="bold">→</text>
+  <rect x="440" y="25" width="170" height="50" rx="10" fill="#1a1a2e" stroke="#27ae60" stroke-width="1.5" class="bh fi3"/>
+  <text x="525" y="45" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#27ae60">📏 Size Grouping</text>
+  <text x="525" y="62" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Fast pre-filter by bytes</text>
+  <text x="620" y="55" text-anchor="middle" font-size="22" fill="#e94560" class="p3" font-weight="bold">→</text>
+  <rect x="640" y="25" width="210" height="50" rx="10" fill="#1a1a2e" stroke="#f39c12" stroke-width="1.5" class="bh fi4"/>
+  <text x="745" y="45" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#f39c12">🧠 Parallel Hashing</text>
+  <text x="745" y="62" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">CPU multi-core turbo</text>
+  <text x="745" y="110" text-anchor="middle" font-size="22" fill="#e94560" class="p4" font-weight="bold">↓</text>
+  <!-- Row 2 -->
+  <rect x="50" y="120" width="200" height="50" rx="10" fill="#1a1a2e" stroke="#9b59b6" stroke-width="1.5" class="bh"/>
+  <text x="150" y="143" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#9b59b6">🖼️ Perceptual Hash</text>
+  <text x="150" y="160" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">dHash — catches resized dupes</text>
+  <text x="260" y="150" text-anchor="middle" font-size="22" fill="#e94560" class="p2" font-weight="bold">←</text>
+  <rect x="280" y="120" width="200" height="50" rx="10" fill="#1a1a2e" stroke="#1abc9c" stroke-width="1.5" class="bh"/>
+  <text x="380" y="143" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#1abc9c">🎬 Binary Hash</text>
+  <text x="380" y="160" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">xxHash64 — exact match</text>
+  <text x="490" y="150" text-anchor="middle" font-size="22" fill="#e94560" class="p3" font-weight="bold">→</text>
+  <rect x="510" y="120" width="200" height="50" rx="10" fill="#1a1a2e" stroke="#e74c3c" stroke-width="1.5" class="bh"/>
+  <text x="610" y="143" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="#e74c3c">📊 Hash Grouping</text>
+  <text x="610" y="160" text-anchor="middle" font-size="10" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">Same hash = Duplicate!</text>
+  <text x="720" y="150" text-anchor="middle" font-size="22" fill="#e94560" class="p4" font-weight="bold">→</text>
+  <rect x="740" y="110" width="140" height="70" rx="14" fill="#e94560" class="tb"/>
+  <text x="810" y="140" text-anchor="middle" font-size="15" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">🎯 DUPES</text>
+  <text x="810" y="160" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" fill="white">FOUND!</text>
+  <text x="400" y="215" text-anchor="middle" font-size="22" fill="#e94560" class="p5" font-weight="bold">↓</text>
+  <rect x="270" y="230" width="360" height="40" rx="20" fill="#27ae60" class="cp"/>
+  <text x="450" y="256" text-anchor="middle" font-size="14" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white">🗑️ DELETE: Recycle Bin (Safe) or Permanent</text>
+</svg>
+ 

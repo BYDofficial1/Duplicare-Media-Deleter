@@ -1,0 +1,68 @@
+<!-- Header banner with animated title and badges for Media Duplicate Finder -->
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="150" viewBox="0 0 900 150">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0)" />
+      <stop offset="40%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="50%" stop-color="rgba(255,255,255,0.1)" />
+      <stop offset="60%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+      <animateTransform attributeName="transform" type="translate" values="-200,0;900,0" dur="6s" repeatCount="indefinite"/>
+    </linearGradient>
+    <filter id="glowFilter">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <style>
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes glowPulse { 0%,100%{opacity:0.5;filter:drop-shadow(0 0 4px #e94560)} 50%{opacity:1;filter:drop-shadow(0 0 16px #e94560)} }
+    @keyframes slideUp { 0%{transform:translateY(35px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+    @keyframes slideRight { 0%{transform:translateX(-30px);opacity:0} 100%{transform:translateX(0);opacity:1} }
+    @keyframes moveDot { 0%,100%{transform:translateY(0);opacity:0.3} 50%{transform:translateY(-25px);opacity:0.8} }
+    @keyframes pulse { 0%,100%{r:5;opacity:1} 50%{r:9;opacity:0.4} }
+    @keyframes colorCycle { 0%,100%{fill:#e94560} 33%{fill:#f39c12} 66%{fill:#3498db} }
+    @keyframes sparkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
+    @keyframes rotate { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    @keyframes borderGlow { 0%,100%{stroke:rgba(233,69,96,0.3)} 50%{stroke:rgba(233,69,96,0.7)} }
+    .float { animation:float 3s ease-in-out infinite }
+    .float2 { animation:float2 2.5s ease-in-out infinite }
+    .glowBadge { animation:glowPulse 2s ease-in-out infinite }
+    .s1 { animation:slideUp 0.8s ease-out both }
+    .s2 { animation:slideUp 1s ease-out both }
+    .s3 { animation:slideRight 0.6s ease-out both }
+    .dot { animation:moveDot 3s ease-in-out infinite }
+    .dot2 { animation:moveDot 2.8s ease-in-out infinite; animation-delay:0.8s }
+    .dot3 { animation:moveDot 3.2s ease-in-out infinite; animation-delay:1.5s }
+    .dot4 { animation:moveDot 2.5s ease-in-out infinite; animation-delay:2s }
+    .pulse { animation:pulse 2s ease-in-out infinite }
+    .colorCycle { animation:colorCycle 4s ease-in-out infinite }
+    .sparkle1 { animation:sparkle 2s ease-in-out infinite; animation-delay:0s }
+    .sparkle2 { animation:sparkle 2s ease-in-out infinite; animation-delay:0.7s }
+    .sparkle3 { animation:sparkle 2s ease-in-out infinite; animation-delay:1.4s }
+    .borderAnim { animation:borderGlow 3s ease-in-out infinite }
+  </style>
+  <rect width="900" height="150" rx="18" fill="url(#bg)" stroke="#e94560" stroke-width="1" class="borderAnim"/>
+  <rect width="900" height="150" rx="18" fill="url(#shine)"/>
+  <circle cx="80" cy="125" r="2" fill="#e94560" class="dot"/>
+  <circle cx="200" cy="120" r="2" fill="#3498db" class="dot2"/>
+  <circle cx="750" cy="118" r="2" fill="#27ae60" class="dot3"/>
+  <circle cx="820" cy="125" r="2" fill="#f39c12" class="dot4"/>
+  <circle cx="120" cy="20" r="1.5" fill="#e94560" class="sparkle1"/>
+  <circle cx="680" cy="15" r="1.5" fill="#f39c12" class="sparkle2"/>
+  <circle cx="400" cy="130" r="1.5" fill="#3498db" class="sparkle3"/>
+  <text x="60" y="58" font-size="38" class="float">🖼</text>
+  <text x="115" y="55" font-size="32" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white" class="s1">Media Duplicate Finder</text>
+  <text x="115" y="84" font-size="15" font-family="Segoe UI, Arial, sans-serif" fill="#bdc3c7" class="s2">Find &amp; Remove Duplicate Images  <tspan fill="#e94560" font-weight="bold">·</tspan>  Videos  <tspan fill="#e94560" font-weight="bold">·</tspan>  Audio Files</text>
+  <rect x="720" y="22" width="120" height="32" rx="16" fill="#e94560" class="glowBadge"/>
+  <text x="780" y="44" text-anchor="middle" font-size="12" font-family="Segoe UI, Arial, sans-serif" font-weight="bold" fill="white" class="s3">v1.0 RELEASED</text>
+  <circle cx="30" cy="125" r="5" fill="#27ae60" class="pulse"/>
+  <text x="45" y="129" font-size="12" font-family="Segoe UI, Arial, sans-serif" fill="#bdc3c7">Blazing Fast  ·  Perceptual Hash  ·  Safe Delete</text>
+  <text x="830" y="129" font-size="11" font-family="Segoe UI, Arial, sans-serif" fill="#7f8c8d">v1.0</text>
+</svg>
+ 
