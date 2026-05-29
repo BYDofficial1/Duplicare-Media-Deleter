@@ -578,6 +578,15 @@ class DuplicateFinderGUI:
             if not all_files: self.root.after(0, self._no_media); return
             self.scanned_files = all_files
             self.root.after(0, lambda: self._show_dashboard(all_files))
+            # Auto-delete empty folders
+            empty = []
+            for root, dirs, files in os.walk(folder):
+                if not dirs and not files: empty.append(root)
+            for d in empty:
+                try: os.rmdir(d)
+                except: pass
+            if empty:
+                self.root.after(0, lambda c=len(empty): self.foot_l.config(text=f'● {c} empty folder(s) auto-deleted'))
             groups = find_duplicates(all_files, self._progress, lambda: self.cancel_flag, self.hash_size.get())
             if self.cancel_flag: self.root.after(0, self._scan_cancelled); return
             self.root.after(0, lambda: self._show_results(all_files, groups))
@@ -655,18 +664,11 @@ class DuplicateFinderGUI:
 
     def _select_dupes(self):
         for v in self.check_vars.values(): v.set(False)
-        # Count files per parent folder from scanned_files
-        folder_counts = {}
-        for f in self.scanned_files:
-            d = os.path.dirname(f['path'])
-            folder_counts[d] = folder_counts.get(d, 0) + 1
         for g in self.duplicate_groups:
-            # Check parent folder file count of first file in group
-            first_dir = os.path.dirname(g['files'][0]['path'])
-            cnt = folder_counts.get(first_dir, 0)
-            if cnt > 10:
+            n = len(g['files'])
+            if n > 10:
                 continue
-            elif cnt <= 5:
+            elif n <= 5:
                 for f in g['files']:
                     if f['path'] in self.check_vars and f['path'] not in self.deleted_paths: self.check_vars[f['path']].set(True)
             else:
