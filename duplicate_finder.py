@@ -350,6 +350,8 @@ class DuplicateFinderGUI:
         self.tree.bind('<space>', lambda e: self._on_click(None))
         self.tree.bind('<Button-3>', self._on_right_click)
         self.tree.bind('<<TreeviewSelect>>', self._on_select)
+        self.tree.bind('<Up>', self._nav_up)
+        self.tree.bind('<Down>', self._nav_down)
         self._empty_label = tk.Label(card, font=('Segoe UI', 12), bg=self.C['card'], fg=self.C['text_light'])
         self._show_empty()
         # Preview panel
@@ -364,6 +366,9 @@ class DuplicateFinderGUI:
         self.preview_img_label.pack(padx=10, pady=5)
         self.preview_info = tk.Label(self.preview_card, text='', font=self.FONT_SUB, bg=self.C['card'], fg=self.C['text_light'], justify='left', wraplength=220)
         self.preview_info.pack(padx=10, pady=5, fill=tk.X)
+        self.preview_play_btn = tk.Button(self.preview_card, text='▶ Play', font=self.FONT_BOLD, bg=self.C['green'], fg='white', bd=0, padx=16, pady=6, cursor='hand2', command=self._play_preview)
+        self.preview_dur_label = tk.Label(self.preview_card, text='', font=self.FONT_SUB, bg=self.C['card'], fg=self.C['text_light'], wraplength=220)
+        self.preview_dur_label.pack(padx=10, pady=(0,4), fill=tk.X)
 
     def _on_select(self, event):
         sel = self.tree.selection()
@@ -372,9 +377,11 @@ class DuplicateFinderGUI:
         if iid in self.group_parent_ids or iid not in self.check_vars: return
         path = iid
         self.preview_label.config(text=os.path.basename(path))
-        info_text = f"Path: {path}\nSize: {self._get_tree_val(iid, 'size')}\nType: {self._get_tree_val(iid, 'type')}"
+        info_text = f"Path: {os.path.dirname(path)}\nSize: {self._get_tree_val(iid, 'size')}\nType: {self._get_tree_val(iid, 'type')}"
         self.preview_info.config(text=info_text)
         ext = os.path.splitext(path)[1].lower()
+        self.preview_play_btn.pack_forget()
+        self.preview_dur_label.pack_forget()
         if ext in IMAGE_EXTS and HAS_IMAGE_HASH:
             try:
                 img = Image.open(path)
@@ -386,6 +393,67 @@ class DuplicateFinderGUI:
                 self.preview_img_label.config(image='')
         else:
             self.preview_img_label.config(image='')
+        if ext in VIDEO_EXTS or ext in AUDIO_EXTS:
+            self._last_preview_path = path
+            lbl = '🎬' if ext in VIDEO_EXTS else '🎵'
+            self.preview_play_btn.config(text=f'{lbl}  Play in Player')
+            self.preview_play_btn.pack(padx=10, pady=4)
+            mt = self._get_tree_val(iid, 'mtime')
+            self.preview_dur_label.config(text=f'Click Play to open in system default player')
+            self.preview_dur_label.pack(padx=10, pady=(0,4), fill=tk.X)
+
+    def _play_preview(self):
+        path = getattr(self, '_last_preview_path', None)
+        if not path or not os.path.exists(path): return
+        try:
+            if sys.platform == 'win32': os.startfile(path)
+            elif sys.platform == 'darwin': os.system(f'open "{path}"')
+            else: os.system(f'xdg-open "{path}"')
+        except: pass
+
+    def _nav_find(self, direction: int):
+        all_iids = self.tree.get_children()
+        sel = self.tree.selection()
+        if not sel: return
+        cur = sel[0]
+        parent = self.tree.parent(cur) if self.tree.parent(cur) else None
+        def find_next_in(parent_iid, start_idx, dir_val):
+            sibs = self.tree.get_children(parent_iid) if parent_iid else all_iids
+            idx = start_idx
+            while 0 <= idx < len(sibs):
+                if sibs[idx] not in self.group_parent_ids:
+                    return sibs[idx]
+                idx += dir_val
+            return None
+        if parent:
+            sibs = self.tree.get_children(parent)
+            try: idx = sibs.index(cur)
+            except: return
+            nxt = find_next_in(parent, idx + direction, direction)
+            if nxt:
+                self.tree.selection_set(nxt); self.tree.focus(nxt); self.tree.see(nxt)
+                self._on_select(None); return
+            p_idx = all_iids.index(parent) + direction
+            while 0 <= p_idx < len(all_iids):
+                nxt = find_next_in(all_iids[p_idx], 0 if direction > 0 else len(self.tree.get_children(all_iids[p_idx]))-1, direction)
+                if nxt:
+                    self.tree.selection_set(nxt); self.tree.focus(nxt); self.tree.see(nxt)
+                    self._on_select(None); return
+                p_idx += direction
+        else:
+            sibs = all_iids
+            try: idx = sibs.index(cur)
+            except: return
+            nxt = find_next_in(None, idx + direction, direction)
+            if nxt:
+                self.tree.selection_set(nxt); self.tree.focus(nxt); self.tree.see(nxt)
+                self._on_select(None)
+
+    def _nav_up(self, event):
+        self._nav_find(-1); return 'break'
+
+    def _nav_down(self, event):
+        self._nav_find(1); return 'break'
 
     def _get_tree_val(self, iid, col):
         cols = {'checked':0,'group':1,'filename':2,'path':3,'size':4,'type':5,'mtime':6}
